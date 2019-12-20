@@ -16,7 +16,9 @@ export class FeedPage {
   public loader
   public refresher
   public isRefresher = false
+  public infiniteScroll
   public listaFilmes = new Array<any>();
+  public page = 1
 
   constructor(
     public navCtrl: NavController,
@@ -30,14 +32,21 @@ export class FeedPage {
     this.loadingMovies()
   }
 
-  loadingMovies() {
+  loadingMovies(newPage: boolean = false) {
     this.presentLoading()
-    this.movieProvider.getPopular().subscribe(
+    this.movieProvider.getPopular(this.page).subscribe(
       data => {
         const response = (data as any)
         const objetoRetorno = JSON.parse(response._body)
-        this.listaFilmes = objetoRetorno.results
-        console.log(objetoRetorno)
+
+        if (newPage) {
+          this.listaFilmes = this.listaFilmes.concat(objetoRetorno.results)
+          this.infiniteScroll.complete()
+        } else {
+          this.listaFilmes = objetoRetorno.results
+        }
+
+        // console.log(objetoRetorno)
         this.dismissLoading()
         if (this.isRefresher) {
           this.refresher.complete()
@@ -58,7 +67,7 @@ export class FeedPage {
     this.loader = this.loadingCtrl.create({
       content: 'Carregando...'
     });
-    this.loader.present();
+    this.loader.present()
   }
 
   dismissLoading() {
@@ -73,5 +82,11 @@ export class FeedPage {
 
   abrirDetalhes(filme) {
     this.navCtrl.push(DetalhesFilmePage, { id: filme.id })
+  }
+
+  doInfinite(infiniteScroll) {
+    this.page++
+    this.infiniteScroll = infiniteScroll
+    this.loadingMovies(true)
   }
 }

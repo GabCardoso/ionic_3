@@ -12,15 +12,12 @@
   <ion-card *ngFor="let filme of listaFilmes">
 
     <ion-item>
-      <ion-avatar item-start>
-        <img src="assets/imgs/avatar.png">
-      </ion-avatar>
       <h2 class="feed_title">{{ filme.original_title }}</h2>
       <ion-row>
         <ion-col>
           <ion-row>
-            <div>{{ filme.vote_average }}</div>
             <ion-icon name="star"></ion-icon>
+            <div>{{ filme.vote_average }}</div>
           </ion-row>
         </ion-col>
         <ion-col>
@@ -46,4 +43,7 @@
     <button ion-button block (click)="abrirDetalhes(filme)">Detalhes</button>
   </ion-card>
 
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
