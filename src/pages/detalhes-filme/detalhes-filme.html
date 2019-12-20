@@ -1,15 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Feed</ion-title>
+    <ion-title>Detalhes Filme</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-refresher (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-
-  <ion-card *ngFor="let filme of listaFilmes">
+  <ion-card *ngIf="filme">
 
     <ion-item>
       <ion-avatar item-start>
@@ -35,15 +31,6 @@
     <ion-card-content>
       <p>{{ filme.overview }}</p>
     </ion-card-content>
-
-    <ion-row>
-      <ion-col>
-        <button ion-button icon-start clear small>
-
-        </button>
-      </ion-col>
-    </ion-row>
-    <button ion-button block (click)="abrirDetalhes(filme)">Detalhes</button>
   </ion-card>
 
 </ion-content>
